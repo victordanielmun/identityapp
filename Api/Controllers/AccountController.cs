@@ -28,6 +28,16 @@ namespace Api.Controllers
             _userManager = userManager;
         }
 
+        [Authorize]
+        [HttpGet("refresh-user-token")]
+        public async Task<ActionResult<UserDto>> RefreshUserToken()
+        {
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.Email)?.Value);
+            
+            return createApplicationUserDto(user);
+        }
+
+
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto model)
         {
