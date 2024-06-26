@@ -2,8 +2,11 @@
 using Api.Models;
 using Api.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Api.Controllers
@@ -28,7 +31,7 @@ namespace Api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto model)
         {
-            var user = await _userManager.FindByEmailAsync(model.UserName);
+            var user = await _userManager.FindByNameAsync(model.UserName);
             //email no encontrado
             if(user == null) return Unauthorized("Invalid user o password");
             //usuario no confirma email
@@ -42,17 +45,26 @@ namespace Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto model)
+        public async Task<ActionResult> Register(RegisterDto model)
         {
-            var user = new User
+            if (await CheckEmailExistsAsync(model.Email))
             {
-                UserName = model.UserName,
-                Email = model.Email
+                return BadRequest($"Email {model.Email} already exists, try with another one");
+            }
+
+            var userToAdd = new User
+            {
+                FirstName = model.FirstName.ToLower(),
+                LastName = model.LastName.ToLower(),
+                UserName = model.Email.ToLower(),
+                Email = model.Email.ToLower(),
+                EmailConfirmed = true
             };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if(!result.Succeeded) return BadRequest(result.Errors);
-            await _userManager.AddToRoleAsync(user, "User");
-            return createApplicationUserDto(user);
+
+            var result = await _userManager.CreateAsync(userToAdd, model.Password);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            return Ok("User created successfully,you can login now");
         }
 
         #region Private Helper Methods
@@ -65,6 +77,13 @@ namespace Api.Controllers
                 JWT = _jwtService.CreateJWT(user)
             };
         }
+
+        private async Task<bool> CheckEmailExistsAsync(string email)
+        {
+           return await _userManager.Users.AnyAsync(u => u.Email == email.ToLower());
+        }
+        
+
         #endregion
 
     }
