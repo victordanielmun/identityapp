@@ -74,7 +74,7 @@ namespace Api.Controllers
             var result = await _userManager.CreateAsync(userToAdd, model.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
 
-            return Ok("User created successfully,you can login now");
+            return Ok(new JsonResult(new {title = "Registration Successful", message = "Your account has been created successfully" }));
         }
 
         #region Private Helper Methods

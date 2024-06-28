@@ -22,20 +22,34 @@
                     <input type="text" formControlName="lastName" class=" form-control" id="lastName" placeholder="Email">
                     <label for="lastName" class="text-center " [class.is-invalid]="submitted && registerForm.get('lastName')?.errors" >Last Name</label>
                     <span class="text-danger mx-1" *ngIf="submitted && 
-                    registerForm.get('firstName')?.hasError('required')">Last Name is required</span>
+                    registerForm.get('lastName')?.hasError('required')">Last Name is required</span>
                     <span class="text-danger mx-1" *ngIf="submitted && 
-                    registerForm.get('firstName')?.hasError('minlength') || registerForm.get('firstName')?.hasError('maxlength')">
+                    registerForm.get('lastName')?.hasError('minlength') || registerForm.get('lastName')?.hasError('maxlength')">
                         Last Name must be at least 3 characters, and minimum 20</span>
                 </div>
 
                 <div class="form-floating mb-3">
                     <input type="email" formControlName="email" class=" form-control" id="email" placeholder="Email">
                     <label for="email" class="text-center " [class.is-invalid]="submitted && registerForm.get('email')?.errors" >Email address</label>
+                    <span class="text-danger mx-1" *ngIf="submitted &&
+                    registerForm.get('email')?.hasError('required')">Email is required</span>
+                    <span class="text-danger mx-1" *ngIf="submitted &&
+                    registerForm.get('email')?.hasError('pattern')">Email is not valid</span>
                 </div>
 
                 <div class="form-floating mb-3">
                     <input type="password" formControlName="password" class=" form-control" id="password" placeholder="password">
                     <label for="password" class="text-center" [class.is-invalid]="submitted && registerForm.get('password')?.errors" >password</label>
+                    <span class="text-danger mx-1" *ngIf="submitted &&
+                    registerForm.get('password')?.hasError('required')">password is required</span>
+                    <span class="text-danger mx-1" *ngIf="submitted &&
+                    registerForm.get('password')?.hasError('minlength') || registerForm.get('password')?.hasError('maxlength')">
+                        password must be at least 6 characters</span>
+                </div>
+
+                <div class="form-floating" *ngIf="errorMessages.length > 0">
+                    <app-validation-messages [errorMessages]="errorMessages">
+                    </app-validation-messages>
                 </div>
 
                 <div class="d-grid mt-4 px-1">

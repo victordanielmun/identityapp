@@ -31,12 +31,15 @@ export class RegisterComponent implements OnInit {
     });
   }
   register() {
-    console.log(this.registerForm.value);
+    
+    
     
     this.submitted = true;
     this.errorMessages = [];
     
-    if(this.registerForm.valid) {
+    // if(this.registerForm.valid) {
+      
+      console.log(this.registerForm.value);
 
       this.accountService.register(this.registerForm.value).subscribe({
         next: (response) => {
@@ -44,9 +47,17 @@ export class RegisterComponent implements OnInit {
         },
         error: (error) => {
           console.log(error)
+          if (error.error.errors){
+            this.errorMessages = error.error.errors;
+          } else {
+            this.errorMessages.push(error.error)
+          }
+          
         }
       })
 
-      }
+      // } else {
+      //   console.log(this.registerForm.valid)
+      // }
   }
 }
