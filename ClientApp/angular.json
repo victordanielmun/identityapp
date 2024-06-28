@@ -33,7 +33,6 @@
           },
           "configurations": {
             "production": {
-              
               "budgets": [
                 {
                   "type": "initial",
@@ -49,7 +48,6 @@
               "outputHashing": "all"
             },
             "development": {
-              
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
