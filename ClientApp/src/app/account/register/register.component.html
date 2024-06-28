@@ -1,0 +1,47 @@
+<div class="d-flex justify-content">
+    <div class="col-12 col-lg-5 mx-auto">
+        <main class="form-signin">
+            <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off" >
+                <div class="text-center mb-4">
+                    <h3 class="mb-3 font-weight-normal">
+                        Register
+                    </h3>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" formControlName="firstName" class=" form-control" id="firstName" placeholder="Email">
+                    <label for="firstName" class="text-center " [class.is-invalid]="submitted && registerForm.get('firstName')?.errors" >First Name</label>
+                    <span class="text-danger mx-1" *ngIf="submitted && 
+                    registerForm.get('firstName')?.hasError('required')">First Name is required</span>
+                    <span class="text-danger mx-1" *ngIf="submitted && 
+                    registerForm.get('firstName')?.hasError('minlength') || registerForm.get('firstName')?.hasError('maxlength')">
+                        First Name must be at least 3 characters, and minimum 20</span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" formControlName="lastName" class=" form-control" id="lastName" placeholder="Email">
+                    <label for="lastName" class="text-center " [class.is-invalid]="submitted && registerForm.get('lastName')?.errors" >Last Name</label>
+                    <span class="text-danger mx-1" *ngIf="submitted && 
+                    registerForm.get('firstName')?.hasError('required')">Last Name is required</span>
+                    <span class="text-danger mx-1" *ngIf="submitted && 
+                    registerForm.get('firstName')?.hasError('minlength') || registerForm.get('firstName')?.hasError('maxlength')">
+                        Last Name must be at least 3 characters, and minimum 20</span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="email" formControlName="email" class=" form-control" id="email" placeholder="Email">
+                    <label for="email" class="text-center " [class.is-invalid]="submitted && registerForm.get('email')?.errors" >Email address</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="password" formControlName="password" class=" form-control" id="password" placeholder="password">
+                    <label for="password" class="text-center" [class.is-invalid]="submitted && registerForm.get('password')?.errors" >password</label>
+                </div>
+
+                <div class="d-grid mt-4 px-1">
+                    <button class="btn btn-info btn-lg" type="submit">Create User</button>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
