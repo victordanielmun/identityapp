@@ -16,7 +16,6 @@ export class LoginComponent implements OnInit {
   errorMessages: string[] = []
   
   constructor(private accountService: AccountService,
-    private sharedService: SharedService,
     private formBuilder : FormBuilder,
     private router: Router) { }
 
@@ -27,8 +26,8 @@ export class LoginComponent implements OnInit {
   initializateForm() 
   {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.pattern('^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$')]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],      
+      userName: ['', Validators.required],
+      password: ['', Validators.required],      
     })
   }
 
@@ -38,14 +37,21 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     this.errorMessages = [];
     
-    this.accountService.login(this.loginForm.value).subscribe({
-      next: (response: any) => 
-        {
-          console.log(response)
-        },
-      error: (error) => {
-        console.log(error)
-      }
-    })
+    if (this.loginForm.valid) { 
+      this.accountService.login(this.loginForm.value).subscribe({
+        next: (response: any) => 
+          {
+            //console.log(response)
+          },
+        error: error => {
+          console.log(error)
+          if(error.error.errors){
+            this.errorMessages = error.error.errors;
+          } else {
+            this.errorMessages.push(error.error)
+          }
+        }
+      })
+     }
   }
 }
