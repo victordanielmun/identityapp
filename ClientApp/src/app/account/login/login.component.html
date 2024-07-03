@@ -1,6 +1,6 @@
 <div class="d-flex justify-content">
     <div class="col-12 col-lg-5 mx-auto">
-        <main class="form-signin">
+        <main class="form-signin" *ngIf="!(accountService.user$ | async) as user"  >
             <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="on">
                 <div class="text-center mb-4">
                     <h3 class="mb-3 font-weight-normal">
@@ -35,5 +35,12 @@
                 </div>
             </form>
         </main>
+
+        <div *ngIf="(accountService.user$ | async) as user" >
+           <h3 class="mb-3 font-weight-normal">
+            Welcome
+            <!-- <span class="text-warning">{{user.firstName | titlecase}} {{user.lastName | titlecase}}</span> -->
+           </h3> 
+        </div>
     </div>
 </div>

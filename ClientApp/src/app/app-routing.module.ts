@@ -4,10 +4,18 @@ import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './shared/components/errors/not-found/not-found.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
+import { AuthorizationGuard } from './shared/guards/authorization.guard';
 
 const routes: Routes = [
-  {path : '', redirectTo: 'home', pathMatch: 'full'},
-  {path : 'home', component: HomeComponent},
+  {path : '', redirectTo: 'account/login', pathMatch: 'full'},
+  {
+    path : 'home', component: HomeComponent,
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthorizationGuard],
+    children: [
+      {path : 'home', component: HomeComponent}
+    ]
+  },
   {path : 'about', component: AboutComponent},
   {path : 'contact', component: ContactComponent},
   //implementa carga perezosa para account

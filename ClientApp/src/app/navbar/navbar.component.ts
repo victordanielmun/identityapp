@@ -14,7 +14,7 @@ export class NavbarComponent {
 
   logout() {
     console.log('Logout');
-   // this.accountService.logout();
+    this.accountService.logout();
   }
 
 }

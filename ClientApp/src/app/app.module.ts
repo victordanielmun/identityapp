@@ -11,6 +11,8 @@ import { SharedModule } from './shared/shared.module';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     BrowserAnimationsModule,
     ModalModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
